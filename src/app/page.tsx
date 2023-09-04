@@ -1,113 +1,202 @@
-import Image from 'next/image'
+'use client'
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+import React, { useEffect, useState } from 'react'
+import { Toaster, toast } from 'sonner'
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+const Home = () => {
+   const [image, setImage] = useState('')
+   const [search, setSearch] = useState('')
+   const [loader, setLoader] = useState(false)
+   const [mode, setMode] = useState('light')
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+   useEffect(() => {
+      toast.success('Welcome to Dall-E 2 Image Generator... 🥳')
+   }, [])
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+   const handleSearch = async () => {
+      try {
+         setLoader(true)
+         const response = await fetch(`/api/generate`, {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+               prompt: `${search}`,
+            }),
+         })
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
+         const data = await response.json()
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+         if (data.code === 200) {
+            toast.success(`${data.msg}`)
+            setImage(data.url)
+            setSearch('')
+         } else {
+            toast.error(`${data.msg}`)
+         }
+
+         setLoader(false)
+      } catch (e) {
+         console.error(e)
+
+         toast.error('Server Error x_x. Try again later. 🙃')
+      }
+   }
+
+   const changeTheme = () => {
+      if (mode === 'light') {
+         setMode('dark')
+         document.documentElement.classList.add('dark')
+      } else {
+         setMode('light')
+         document.documentElement.classList.remove('dark')
+      }
+   }
+
+   return (
+      <>
+         <Toaster position="top-right" expand={true} richColors />
+
+         <div className="flex min-h-screen flex-col items-center justify-center bg-slate-300 dark:bg-neutral-900">
+            <button
+               className="fixed bottom-4 right-4 rounded-full bg-slate-900 p-3 text-white shadow-lg transition duration-300 ease-in-out hover:bg-slate-600 dark:bg-slate-50 dark:text-black dark:hover:bg-slate-300"
+               onClick={changeTheme}
+            >
+               {mode === 'light' ? (
+                  <svg
+                     xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     strokeWidth="1.5"
+                     stroke="currentColor"
+                     className="h-6 w-6"
+                  >
+                     <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+                     />
+                  </svg>
+               ) : (
+                  <svg
+                     xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     strokeWidth="1.5"
+                     stroke="currentColor"
+                     className="h-6 w-6"
+                  >
+                     <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+                     />
+                  </svg>
+               )}
+            </button>
+
+            <div className="mx-2 my-2 rounded-lg bg-white px-6 py-8 shadow-xl ring-1 ring-slate-900/5 dark:bg-slate-800 md:w-5/12">
+               <div className="flex justify-between">
+                  <h1 className="inline-flex items-center text-center text-xl font-black uppercase dark:text-white sm:text-2xl md:text-3xl">
+                     GENERATE IMAGE
+                  </h1>
+
+                  <div
+                     className="cursor-pointer rounded-lg border-slate-900 bg-zinc-700 px-2 py-2 text-slate-50 hover:bg-zinc-600 dark:bg-slate-900 dark:text-slate-50 dark:hover:bg-slate-700"
+                     onClick={() => setImage('')}
+                  >
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="h-6 w-6"
+                     >
+                        <path
+                           strokeLinecap="round"
+                           strokeLinejoin="round"
+                           d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"
+                        />
+                     </svg>
+                  </div>
+               </div>
+
+               <div className=" mt-3 inline-grid w-full items-center justify-center gap-2 sm:inline-flex">
+                  <label className="relative">
+                     <span className="sr-only">Search</span>
+                     <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+                        <svg
+                           className="h-5 w-5 fill-slate-300"
+                           viewBox="0 0 20 20"
+                        >
+                           {/* SVG de icon de lupa */}
+                           <path
+                              fillRule="evenodd"
+                              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                              clipRule="evenodd"
+                           ></path>
+                        </svg>
+                     </span>
+                     <input
+                        className="block w-full rounded-md border border-slate-300 bg-white py-2 pl-9 pr-3 text-sm shadow-sm placeholder:italic placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+                        placeholder="Search for anything..."
+                        type="text"
+                        name="search"
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
+                     />
+                  </label>
+
+                  <button
+                     className={`inline-flex items-center justify-center rounded-xl bg-rose-600 px-5 py-2 text-center text-xs font-semibold uppercase leading-6 text-white hover:bg-rose-500`}
+                     onClick={handleSearch}
+                     disabled={loader}
+                  >
+                     {loader ? (
+                        <>
+                           <svg
+                              className="-ml-1 mr-3 h-5 w-5 animate-spin text-white motion-reduce:hidden"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                           >
+                              <circle
+                                 className="opacity-25"
+                                 cx="12"
+                                 cy="12"
+                                 r="10"
+                                 stroke="currentColor"
+                                 strokeWidth="4"
+                              ></circle>
+                              <path
+                                 className="opacity-75"
+                                 fill="currentColor"
+                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                              ></path>
+                           </svg>
+                           Processing...
+                        </>
+                     ) : (
+                        <>Generate 🤖</>
+                     )}
+                  </button>
+               </div>
+
+               {image && (
+                  <div className="mt-5 w-full rounded-xl border-red-300 text-center shadow-sm shadow-rose-950 dark:shadow-slate-400">
+                     <img
+                        className="h-96 w-full rounded-xl object-cover"
+                        src={image}
+                        alt="img"
+                     />
+                  </div>
+               )}
+            </div>
+         </div>
+      </>
+   )
 }
+
+export default Home
