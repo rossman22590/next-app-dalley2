@@ -5,9 +5,9 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-   title: 'Generador de imágenes con Dall-E 2',
-   description: 'Generador de imágenes con Dall-E 2 - Genera imágenes a partir de texto en español o inglés',
-   keywords: "generador de imágenes, dall-e 2, developers in action",
+   title: 'Generate Images with DALLE 3',
+   description: 'Generate Images with DALLE 3',
+   keywords: "pixio",
 }
 
 export default function RootLayout({

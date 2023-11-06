@@ -10,7 +10,7 @@ const Home = () => {
    const [mode, setMode] = useState('light')
 
    useEffect(() => {
-      toast.success('Welcome to Dall-E 2 Image Generator... 🥳')
+      toast.success('Welcome to Dall-E 3 Image Generator... 🥳')
    }, [])
 
    const handleSearch = async () => {

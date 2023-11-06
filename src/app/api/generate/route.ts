@@ -21,10 +21,11 @@ export async function POST(
    const promptString = body.prompt
 
    if (!promptString) {
-      return NextResponse.json({ msg: "Ingresa el prompt a generar... 🔴", code: 400 }, { status: 400 })
+      return NextResponse.json({ msg: "Error in generating.. 🔴", code: 400 }, { status: 400 })
    }
 
    const aiResponse = await openai.images.generate({
+      model: "dall-e-3",
       prompt: promptString,
       n: 1,
       size: "1024x1024"
@@ -33,5 +34,5 @@ export async function POST(
    console.log(aiResponse)
 
    const imageUrl = aiResponse.data[0].url
-   return NextResponse.json({ url: imageUrl, msg: 'Imagen generada correctamente ✅', code: 200 }, { status: 200 })
+   return NextResponse.json({ url: imageUrl, msg: 'Successfull DALLE-3 Generation✅', code: 200 }, { status: 200 })
 }
